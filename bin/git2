@@ -1,0 +1,4 @@
+#/bin/bash
+export LESS=eFRX
+echo `pwd` Git $@ | tee /tmp/lastgitcommand
+/usr/bin/git -p $@  | tee -a /tmp/lastgitcommand 

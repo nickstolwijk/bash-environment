@@ -1,0 +1,8 @@
+#!/bin/bash
+while read line; do
+   TAG=$(echo $line | awk 'BEGIN { FS = " " } ; { print $2 }')
+   DATUM=$(echo $line | awk 'BEGIN { FS = " " } ; { print $1 }')
+
+   git co -f $TAG
+   mvn clean test sonar:sonar -Dsonar.host.url=http://localhost:9080 -Psonar-localhost -Dsonar.projectDate=$DATUM
+done < /tmp/sonar_runs

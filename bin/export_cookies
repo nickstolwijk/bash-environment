@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+
+sqlite3 $1 <<EOF 
+.mode tabs
+.header off
+select host as domain, 
+case substr(host,1,1)='.' when 0 then 'FALSE' else 'TRUE' end as flag,
+path, 
+case isSecure when 0 then 'FALSE' else 'TRUE' end as secure, 
+expiry as expiration, name, value from moz_cookies;
+
+EOF

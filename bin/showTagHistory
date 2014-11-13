@@ -1,0 +1,10 @@
+#!/bin/bash
+rm /tmp/history
+
+for tag in `git tag -l ecommerce-*`
+do
+  git co -f $tag
+  DATUM=$(git log -1 --pretty=format:%ci | awk 'BEGIN { FS = " " } ; { print $1 }')
+  echo "$DATUM $tag" >> /tmp/history
+done
+
