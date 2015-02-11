@@ -59,22 +59,15 @@ fi
 RED="\[\033[0;31m\]"
 YELLOW="\[\033[0;33m\]"
 GREEN="\[\033[0;32m\]"
+WHITE="\[\033[0;00m\]"
 if [ "$color_prompt" = yes ]; then
+	PS1="$RED\$(date +%H:%M) $GREEN\u@\h$RED:$YELLOW\w$WHITE\$ "
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-    PS1="$RED\$(date +%H:%M) \u@\h:\w$YELLOW \$(__git_ps1)$GREEN\$ "
+    #PS1="$RED\$(date +%H:%M) \u@\h:\w$YELLOW \$(__git_ps1)$GREEN\$ "
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -88,20 +81,6 @@ if [ -x /usr/bin/dircolors ]; then
     alias egrep='egrep --color=auto'
 fi
 
-# some more ls aliases
-#alias ll='ls -l'
-#alias la='ls -A'
-#alias l='ls -CF'
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -113,79 +92,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
-if [ -f ~/.bash_profile ]; then
-    . ~/.bash_profile
-fi
+export M2_HOME=~/apps/apache-maven
 
-export M2_HOME=/home/nick/apps/apache-maven-3.2.3
-
-mvnrun () {
-  echo mvn $@
-  eval mvn $@
-  echo mvn $@
-}
-
-mvnrunwithjvmopts() {
-  maven_opts=$MAVEN_OPTS
-  export MAVEN_OPTS="-Xmx2048m -Xms1024m -XX:MaxPermSize=512m -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,address=8000,suspend=n -Dcom.sun.management.jmxremote -agentlib:TakipiAgent";
-  echo mvn $@
-  eval mvn $@
-  echo mvn $@
-  export MAVEN_OPTS=$maven_opts
-}
-
-function gitmassrun () {
-    failed=""
-    startingdir=`pwd`
-    repositories=`find $startingdir -maxdepth 5 -type d -name .git   | xargs -n 1 dirname   | sort`
-    echo gitmassrun $@ 
-    for i in $repositories; do
-       echo $i 
-       cd $i
-       /usr/bin/git $@ 2>&1 
-       status=$?
-       if [ $status -ne 0 ]; then
-         failed="$failed \n $i"  
-       fi
-       echo 
-    done
-    if [ "$failed" ]; then
-       echo "Failed projects for command '$@':"
-       echo -e "$failed"
-    fi
-    cd $startingdir
-}
-
-gitpushall () {
-    startingdir=`pwd`
-    for i in $@; do
-       cd $i
-       /usr/bin/git push
-       cd $startingdir 
-    done
-}
-function gitmassco () {
-    checkedout=""
-    startingdir=`pwd`
-    repositories=`find /home/nick/appie/source -type d -name .git   | xargs -n 1 dirname   | sort`
-    echo gitmasscheckout $@
-    for i in $repositories; do
-       echo $i
-       cd $i
-       /usr/bin/git checkout $@ 2>&1
-       status=$?
-       if [ $status -eq 0 ]; then
-         checkedout="$checkedout \n $i"
-       else
-         /usr/bin/git checkout master 2>&1
-       fi
-       echo
-    done
-    if [ "$checkedout" ]; then
-       echo "Checked out the projects:"
-       echo -e "$checkedout"
-    fi
-    cd $startingdir
-}
-
-source ~/.mavenrc
+for f in ~/.bash_*_rc
+do
+   source $f
+done

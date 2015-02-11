@@ -1,0 +1,52 @@
+# Default commandos
+alias mci='mvnrun clean install'
+alias mi='mvnrun install'
+alias mcist='mvnrun -T 1C clean install -Dmaven.test.skip=true $@'
+alias mt='mvnrun test $@'
+alias mc='mvnrun clean $@'
+alias mct='mvnrun clean test $@'
+alias mist='mvnrun install -Dmaven.test.skip=true $@'
+alias mcd='mvnrun clean deploy $@'
+
+alias mdr='mvnrun project-info-reports:dependencies'
+alias mda='mvnrun clean dependency:analyze dependency:analyze-dep-mgt -Dmdep.analyze.ignore.direct=false'
+alias mdu='mvnrun versions:display-dependency-updates versions:display-property-updates'
+alias mpu='mvnrun versions:display-plugin-updates'
+alias mdt='mvnrun dependency:tree'
+
+alias mrprepare='mvnrun release:prepare -DpushChanges=false'
+alias mrperform='mvnrun release:perform -DlocalCheckout=true'
+
+alias lmvn='less /tmp/lastmavencommand'
+alias cleanSnapshots='find /home/nick/.m2/repository/com/ahold/ -type f -name *SNAPSHOT* -exec rm -rf {} \;'
+
+alias mulr='mvnrun versions:use-latest-releases -DallowMajorUpgrades=true -DgenerateBackupPoms=false -Dincludes=com.ahold.\*:\* -U'
+
+alias msonar='mvnrun clean test sonar:sonar -Dsonar.host.url=http://localhost:9080 -Psonar-localhost'
+
+#RIGD
+alias mbp='mvnrun  clean install -T 1C -DskipTests=true -Dgwt.compile.skip=true && mvnrun clean install -Pcintia -f productpom.xml'
+
+#Tomcat
+alias mtd='mvnrun tomcat:deploy $@'
+alias msttd='mvnrun tomcat:deploy -Dmaven.test.skip=true $@'
+alias mtr='mvnrun tomcat:redeploy $@'
+alias msttr='mvnrun tomcat:redeploy -Dmaven.test.skip=true $@ '
+alias mtu='mvnrun tomcat:undeploy $@'
+alias mtcr='mvnrun tomcat:run $@' 
+
+#Ahold
+function muls(){ 
+  printf -v var "com.ahold.\*:ecommerce-%s\*," $@
+
+  var=${var%?} 
+  mvnrun versions:use-latest-snapshots -DallowMajorUpdates=true -DgenerateBackupPoms=false -Dincludes=${var} -U;
+}
+alias munv='mvnrun versions:use-next-versions -DgenerateBackupPoms=false -Dincludes=com.ahold.ecommerce:\* -U'
+alias mulp='mvnrun versions:update-parent -DallowSnapshots=false -DgenerateBackupPoms=false \"-DparentVersion=[,900-SNAPSHOT\)\" -U'
+alias mulps='mvnrun versions:update-parent -DallowSnapshots=true -DgenerateBackupPoms=false \"-DparentVersion=[,900-SNAPSHOT\)\" -U'
+alias mur='mvnrun versions:use-releases -DgenerateBackupPoms=false -Dincludes=com.ahold.ecommerce:\*' 
+
+alias mjr='mvnrunwithjvmopts -Decommerce.environment=tst -Doverride.resources=classpath:configuration-local.properties jetty:run'
+alias mcjr='mvnrunwithjvmopts -Decommerce.environment=tst -Doverride.resources=classpath:configuration-local.properties clean jetty:run'
+alias mjrstg='mvnrunwithjvmopts -Decommerce.environment=stg -Doverride.resources=classpath:configuration-local.properties jetty:run'

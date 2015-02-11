@@ -97,3 +97,19 @@ mvn_color()
  
 # Override the mvn command with the colorized one.
 alias mvn="mvn_color"
+
+mvnrun () {
+  echo mvn $@
+  eval mvn $@
+  echo mvn $@
+}
+
+mvnrunwithjvmopts() {
+  maven_opts=$MAVEN_OPTS
+  export MAVEN_OPTS="-Xmx2048m -Xms1024m -XX:MaxPermSize=512m -Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,address=8000,suspend=n -Dcom.sun.management.jmxremote";
+  echo mvn $@
+  eval mvn $@
+  echo mvn $@
+  export MAVEN_OPTS=$maven_opts
+}
+
