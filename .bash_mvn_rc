@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+export M2_HOME=~/apps/apache-maven
+export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=1g"
  
 # Formatting constants
 c_black=

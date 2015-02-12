@@ -1,0 +1,2 @@
+alias gitstup='git stash && git up && git stash pop'
+alias gitsvnup='git stash && git svn rebase && git stash pop'
