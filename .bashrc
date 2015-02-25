@@ -98,3 +98,8 @@ for f in ~/.bash_*_rc
 do
    source $f
 done
+
+if [ -f "${HOME}/.bash_aliases" ]; then
+   source "${HOME}/.bash_aliases"
+fi
+
