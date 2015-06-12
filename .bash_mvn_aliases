@@ -1,7 +1,7 @@
 # Default commandos
 alias mci='mvnrun clean install'
 alias mi='mvnrun install'
-alias mcist='mvnrun -T 1C clean install -Dmaven.test.skip=true $@'
+alias mcist='mvnrun -T6 clean install -Dmaven.test.skip=true $@'
 alias mt='mvnrun test $@'
 alias mc='mvnrun clean $@'
 alias mct='mvnrun clean test $@'
@@ -25,7 +25,7 @@ alias mulr='mvnrun versions:use-latest-releases -DallowMajorUpgrades=true -Dgene
 alias msonar='mvnrun clean test sonar:sonar -Dsonar.host.url=http://localhost:9080 -Psonar-localhost'
 
 #RIGD
-alias mbp='mvnrun  clean install -T 1C -DskipTests=true -Dgwt.compile.skip=true && mvnrun clean install -Pcintia -f productpom.xml'
+alias mbp='mvnrun  clean install -T6 -DskipTests=true -Dgwt.compile.skip=true && mvnrun clean install -Pcintia -f productpom.xml'
 
 #Tomcat
 alias mtd='mvnrun tomcat:deploy $@'

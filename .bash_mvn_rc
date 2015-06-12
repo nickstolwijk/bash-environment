@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export M2_HOME=~/apps/apache-maven
-export MAVEN_OPTS="-Xmx2g -XX:MaxPermSize=1g"
+export MAVEN_OPTS="-Xmx512m -Xms512m -XX:MaxPermSize=512m"
  
 # Formatting constants
 c_black=
@@ -97,7 +97,12 @@ mvn_color()
 
   return $mvn_exit_code
 }
- 
+
+mvn_no_color()
+{
+	$M2_HOME/bin/mvn $@ | tee /tmp/lastmavencommand
+} 
+
 # Override the mvn command with the colorized one.
 alias mvn="mvn_color"
 
