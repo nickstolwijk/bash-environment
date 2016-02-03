@@ -1,12 +1,12 @@
 # Default commandos
-alias mci='mvnrun clean install'
-alias mi='mvnrun install'
-alias mcist='mvnrun -T6 clean install -Dmaven.test.skip=true $@'
-alias mt='mvnrun test $@'
-alias mc='mvnrun clean $@'
-alias mct='mvnrun clean test $@'
-alias mist='mvnrun install -Dmaven.test.skip=true $@'
-alias mcd='mvnrun clean deploy $@'
+alias mci='mvnrun -T1C clean install'
+alias mi='mvnrun -T1C install'
+alias mcist='mvnrun -T1C clean install -Dmaven.test.skip=true $@'
+alias mt='mvnrun -T1C test $@'
+alias mc='mvnrun -T1C clean $@'
+alias mct='mvnrun -T1C clean test $@'
+alias mist='mvnrun -T1C install -Dmaven.test.skip=true $@'
+alias mcd='mvnrun -T1C clean deploy $@'
 
 alias mdr='mvnrun project-info-reports:dependencies'
 alias mda='mvnrun clean dependency:analyze dependency:analyze-dep-mgt -Dmdep.analyze.ignore.direct=false'
@@ -17,10 +17,10 @@ alias mdt='mvnrun dependency:tree'
 alias mrprepare='mvnrun release:prepare -DpushChanges=false'
 alias mrperform='mvnrun release:perform -DlocalCheckout=true'
 
-alias lmvn='less /tmp/lastmavencommand'
+alias lmvn='less /tmp/lastmavencommand-$$'
 alias cleanSnapshots='find /home/nick/.m2/repository/com/ahold/ -type f -name *SNAPSHOT* -exec rm -rf {} \;'
 
-alias mulr='mvnrun versions:use-latest-releases -DallowMajorUpgrades=true -DgenerateBackupPoms=false -Dincludes=com.ahold.\*:\* -U'
+alias mulr='mvnrun versions:use-latest-releases versions:update-properties -DallowMajorUpgrades=true -DgenerateBackupPoms=false -Dincludes=nl.loxi\*:\*,loxia:\* -U'
 
 alias msonar='mvnrun clean test sonar:sonar -Dsonar.host.url=http://localhost:9080 -Psonar-localhost'
 
@@ -42,11 +42,24 @@ function muls(){
   var=${var%?} 
   mvnrun versions:use-latest-snapshots -DallowMajorUpdates=true -DgenerateBackupPoms=false -Dincludes=${var} -U;
 }
-alias munv='mvnrun versions:use-next-versions -DgenerateBackupPoms=false -Dincludes=com.ahold.ecommerce:\* -U'
+alias munv='mvnrun versions:use-next-versions -DgenerateBackupPoms=false -Dincludes=nl.loxi\*:\*,loxia:\* -U'
 alias mulp='mvnrun versions:update-parent -DallowSnapshots=false -DgenerateBackupPoms=false \"-DparentVersion=[,900-SNAPSHOT\)\" -U'
 alias mulps='mvnrun versions:update-parent -DallowSnapshots=true -DgenerateBackupPoms=false \"-DparentVersion=[,900-SNAPSHOT\)\" -U'
-alias mur='mvnrun versions:use-releases -DgenerateBackupPoms=false -Dincludes=com.ahold.ecommerce:\*' 
+alias mur='mvnrun versions:use-releases -DgenerateBackupPoms=false' 
 
 alias mjr='mvnrunwithjvmopts -Decommerce.environment=tst -Doverride.resources=classpath:configuration-local.properties jetty:run'
 alias mcjr='mvnrunwithjvmopts -Decommerce.environment=tst -Doverride.resources=classpath:configuration-local.properties clean jetty:run'
 alias mjrstg='mvnrunwithjvmopts -Decommerce.environment=stg -Doverride.resources=classpath:configuration-local.properties jetty:run'
+alias mit='mvnrun integration-test -Pintegration,test'
+
+function manifest() {
+   printf -v var $@
+   unzip -q -c ${var} META-INF/MANIFEST.MF
+}
+alias manifest-sources='unzip -q -c target/*-SNAPSHOT-sources.jar META-INF/MANIFEST.MF'
+
+function mtsv(){ 
+  printf -v var $@
+  var=echo "${var//+([[:space:]])/}" 
+  mvnrun org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=${var};
+}

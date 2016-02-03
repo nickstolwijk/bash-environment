@@ -1,0 +1,52 @@
+[alias]
+    up = pull --rebase --stat
+    cat = show
+    co = checkout
+    ci = commit -a
+    cp = cherry-pick -e
+    stat = status --short --branch
+    s = status --short --branch
+    undo-commit = !git dl && git reset --soft HEAD^
+    subup = git submodule foreach pull origin master
+    ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    fl = log -u
+    dl = "!git ll -1"
+    dlc = diff --cached HEAD^
+    la = "!git config -l | grep alias | cut -c 7-"
+    tree = log --graph --oneline --all
+    bogus = push origin +:refs/heads/bogus_branch
+    push = push --tags
+	permission-reset = !git diff -p -R | grep -E \"^(diff|(old|new) mode)\" | git apply
+    wd = diff --word-diff="color"
+    wdc = diff --word-diff="color" --cached
+    d = diff --ignore-all-space
+    dc = diff --cached --ignore-all-space
+
+    # Make stashing easier
+    st = stash
+    stl = stash list
+    stp = stash pop
+
+    # Easier merging
+    m = merge -s recursive -X patience
+    mm = merge --no-ff
+
+    ignore = !git update-index --assume-unchanged 
+    unignore = !git update-index --no-assume-unchanged
+    ignored = !git ls-files -v | grep ^[a-z]
+[diff]
+    renameLimit = 2000
+[merge]
+    renameLimit = 32000
+[mergetool]
+    prompt = false
+        keepBackup = false
+[difftool]
+    prompt = false
+[push]
+        default = simple
+[core]
+        fscache = true
+[init]
+        templatedir = ~/bash-environment/git-templates

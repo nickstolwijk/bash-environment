@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export M2_HOME=~/apps/apache-maven
-export MAVEN_OPTS="-Xmx512m -Xms512m -XX:MaxPermSize=512m"
+export MAVEN_OPTS="-Xmx512m -Xms512m"
  
 # Formatting constants
 c_black=
@@ -70,7 +70,7 @@ mvn_color()
  
         tmp_file=$(mktemp) 
  
-        (command $M2_HOME/bin/mvn $@ ; echo $? > $tmp_file) | tee /tmp/lastmavencommand | \
+        (command $M2_HOME/bin/mvn $@ ; echo $? > $tmp_file) | tee /tmp/lastmavencommand-$$ | \
 	 sed -E -e "s/(\[INFO\]) Building( .*)/${info}\1${projectname}\2${c_end}/g" \
 	        -e "s/(\[INFO\]\ \-.*)/${info}\1${c_end}/g" \
                 -e "s/(\[INFO\]\ \[.*)/${c_end}${info}\1${c_end}/g" \
@@ -104,7 +104,7 @@ mvn_no_color()
 } 
 
 # Override the mvn command with the colorized one.
-alias mvn="mvn_color"
+alias mvn="mvn_no_color"
 
 mvnrun () {
   echo mvn $@
