@@ -63,3 +63,10 @@ function mtsv(){
   var=echo "${var//+([[:space:]])/}" 
   mvnrun org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=${var};
 }
+
+function mvs() {
+  printf -v var $@
+  var=echo "${var//+([[:space:]])/}"
+  mvnrun versions:set -f configuratie/pom.xml -DgenerateBackupPoms=false -DnewVersion=${var}; 
+  mvnrun versions:set -DgenerateBackupPoms=false -DnewVersion=${var};
+}

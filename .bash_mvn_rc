@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export M2_HOME=~/apps/apache-maven
-export MAVEN_OPTS="-Xmx512m -Xms512m"
+export MAVEN_OPTS="-Xmx1024m -Xms512m"
  
 # Formatting constants
 c_black=

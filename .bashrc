@@ -8,6 +8,9 @@ case $- in
       *) return;;
 esac
 
+export GITAWAREPROMPT=~/bash-environment/git-aware-prompt
+source "${GITAWAREPROMPT}/main.sh"
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -59,9 +62,10 @@ fi
 RED="\[\033[0;31m\]"
 YELLOW="\[\033[0;33m\]"
 GREEN="\[\033[0;32m\]"
+LIGHT_PURPLE="\[\033[1;35m\]"
 WHITE="\[\033[0;00m\]"
 if [ "$color_prompt" = yes ]; then
-	PS1="$RED\$(date +%H:%M) $GREEN\u@\h$RED:$YELLOW\w$WHITE\$ "
+	PS1="$RED\$(date +%H:%M) $GREEN\u@\h$RED:$LIGHT_PURPLE\$git_branch\$git_dirty$RED:$YELLOW\w$WHITE\$ "
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
     #PS1="$RED\$(date +%H:%M) \u@\h:\w$YELLOW \$(__git_ps1)$GREEN\$ "
 else

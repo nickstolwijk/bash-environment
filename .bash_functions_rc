@@ -51,4 +51,3 @@ cd_func ()
  }
  
 alias cd=cd_func
-echo bla
