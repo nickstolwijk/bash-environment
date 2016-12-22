@@ -1,5 +1,4 @@
 [alias]
-    up = pull --rebase --stat
     cat = show
     co = checkout
     ci = commit -a
@@ -10,11 +9,13 @@
     subup = git submodule foreach pull origin master
     ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-    lol = log --pretty=oneline --abbrev-commit --graph --decorate
+    lol = log --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short  --abbrev-commit --graph --decorate
+#    lol = log --pretty=oneline --abbrev-commit --graph --decorate
     fl = log -u
     dl = "!git ll -1"
     dlc = diff --cached HEAD^
     la = "!git config -l | grep alias | cut -c 7-"
+    out = "!echo bye bye."
     tree = log --graph --oneline --all
     bogus = push origin +:refs/heads/bogus_branch
     push = push --tags
@@ -36,6 +37,9 @@
     ignore = !git update-index --assume-unchanged 
     unignore = !git update-index --no-assume-unchanged
     ignored = !git ls-files -v | grep ^[a-z]
+
+    accept-ours = "!f() { [ -z \"$@\" ] && set - '.'; git checkout --ours -- \"$@\"; git add -u -- \"$@\"; }; f"
+    accept-theirs = "!f() { [ -z \"$@\" ] && set - '.'; git checkout --theirs -- \"$@\"; git add -u -- \"$@\"; }; f"
 [diff]
     renameLimit = 2000
 [merge]
@@ -43,6 +47,9 @@
 [mergetool]
     prompt = false
         keepBackup = false
+[mergetool "cp"]
+        cmd = /bin/cp -v \"$REMOTE\" \"$MERGED\"
+        trustExitCode = true
 [difftool]
     prompt = false
 [push]

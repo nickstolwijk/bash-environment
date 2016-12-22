@@ -1,4 +1,5 @@
 # Default commandos
+alias mcv='mvnrun -T1C clean verify'
 alias mci='mvnrun -T1C clean install'
 alias mi='mvnrun -T1C install'
 alias mcist='mvnrun -T1C clean install -Dmaven.test.skip=true $@'
@@ -9,7 +10,7 @@ alias mist='mvnrun -T1C install -Dmaven.test.skip=true $@'
 alias mcd='mvnrun -T1C clean deploy $@'
 
 alias mdr='mvnrun project-info-reports:dependencies'
-alias mda='mvnrun clean dependency:analyze dependency:analyze-dep-mgt -Dmdep.analyze.ignore.direct=false'
+alias mda='mvnrun clean dependency:analyze dependency:analyze-dep-mgt -Dmdep.analyze.ignore.direct=false -DoutputXML'
 alias mdu='mvnrun versions:display-dependency-updates versions:display-property-updates'
 alias mpu='mvnrun versions:display-plugin-updates'
 alias mdt='mvnrun dependency:tree'
@@ -37,14 +38,13 @@ alias mtcr='mvnrun tomcat:run $@'
 
 #Ahold
 function muls(){ 
-  printf -v var "com.ahold.\*:ecommerce-%s\*," $@
-
   var=${var%?} 
   mvnrun versions:use-latest-snapshots -DallowMajorUpdates=true -DgenerateBackupPoms=false -Dincludes=${var} -U;
 }
 alias munv='mvnrun versions:use-next-versions -DgenerateBackupPoms=false -Dincludes=nl.loxi\*:\*,loxia:\* -U'
-alias mulp='mvnrun versions:update-parent -DallowSnapshots=false -DgenerateBackupPoms=false \"-DparentVersion=[,900-SNAPSHOT\)\" -U'
-alias mulps='mvnrun versions:update-parent -DallowSnapshots=true -DgenerateBackupPoms=false \"-DparentVersion=[,900-SNAPSHOT\)\" -U'
+alias mulp='mvnrun versions:update-parent -DallowSnapshots=false -DgenerateBackupPoms=false \"-DparentVersion=[,900-SNAPSHOT\)\" -U -Dtycho.mode=maven'
+alias mulps='mvnrun versions:update-parent -DallowSnapshots=true -DgenerateBackupPoms=false \"-DparentVersion=[,900-SNAPSHOT\)\" -U -Dtycho.mode=maven'
+alias mvs='mvnrun versions:set -DgenerateBackupPoms=false -DnewVersion=$@'
 alias mur='mvnrun versions:use-releases -DgenerateBackupPoms=false' 
 
 alias mjr='mvnrunwithjvmopts -Decommerce.environment=tst -Doverride.resources=classpath:configuration-local.properties jetty:run'
@@ -61,7 +61,7 @@ alias manifest-sources='unzip -q -c target/*-SNAPSHOT-sources.jar META-INF/MANIF
 function mtsv(){ 
   printf -v var $@
   var=echo "${var//+([[:space:]])/}" 
-  mvnrun org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=${var};
+  mvnrun org.eclipse.tycho:tycho-versions-plugin:set-version -Dtycho.mode=maven -DnewVersion=${var};
 }
 
 function mvs() {

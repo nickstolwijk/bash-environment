@@ -88,12 +88,12 @@ find . -name "$FILES_PATTERN" -exec sed ${SED_OPTIONS} 's/import static org.juni
 find . -name "$FILES_PATTERN" -exec sed ${SED_OPTIONS} 's/import static org.junit.Assert.\*;/import static org.assertj.core.api.Assertions.*;/g' '{}' \;
 echo ''
 echo '13 Handmatige replace scripts'
-find . -name "$FILES_PATTERN" -exec sed -r -i 's/, is\(/)\.isEqualTo((/g' '{}' \; 
+find . -name "$FILES_PATTERN" -exec sed -i 's/, is\(/)\.isEqualTo((/g' '{}' \; 
 find . -name "$FILES_PATTERN" -exec sed -i '/hamcrest/d' '{}' \; 
-find . -name "$FILES_PATTERN" -exec sed -r -i 's/\.isEqualTo\(\(?true\)?\)/\.isTrue()/g' '{}' \; 
-find . -name "$FILES_PATTERN" -exec sed -r -i 's/\.isEqualTo\(\(?false\)?\)/\.isFalse()/g' '{}' \; 
-find . -name "$FILES_PATTERN" -exec sed -r -i 's/\.isEqualTo\(\(?nullValue\(\)\)?\)/\.isNull()/g' '{}' \;
-find . -name "$FILES_PATTERN" -exec sed -r -i 's/\.isEqualTo\(\(?notNullValue\(\)\)?\)/\.isNotNull()/g' '{}' \;
+find . -name "$FILES_PATTERN" -exec sed -i 's/\.isEqualTo\(\(?true\)?\)/\.isTrue()/g' '{}' \; 
+find . -name "$FILES_PATTERN" -exec sed -i 's/\.isEqualTo\(\(?false\)?\)/\.isFalse()/g' '{}' \; 
+find . -name "$FILES_PATTERN" -exec sed -i 's/\.isEqualTo\(\(?nullValue\(\)\)?\)/\.isNull()/g' '{}' \;
+find . -name "$FILES_PATTERN" -exec sed -i 's/\.isEqualTo\(\(?notNullValue\(\)\)?\)/\.isNotNull()/g' '{}' \;
 find . -name "$FILES_PATTERN" -exec sed -i 's/org\.junit\.Assert\.assertThat/org\.assertj\.core\.api\.Assertions\.assertThat/g' '{}' \;
-find . -name "$FILES_PATTERN" -exec sed -r -i 's/\.size\(\)\).isEqualTo\(0\);/)\.isEmpty();/g' '{}' \;
+find . -name "$FILES_PATTERN" -exec sed -i 's/\.size\(\)\).isEqualTo\(0\);/)\.isEmpty();/g' '{}' \;
 find . -name "$FILES_PATTERN" -exec sed -i 's/.size\(\)\).isEqualTo\((.*)\);/).hasSize(\1);/g' '{}' \;

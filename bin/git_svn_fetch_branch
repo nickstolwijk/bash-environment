@@ -1,0 +1,15 @@
+#!/bin/bash
+
+repo=${git svn info | grep "Repository Root" | awk '{print $3}'}
+branchname=$1
+
+# Figure out the revision number based on when a branch was created, then 
+# from r28571, returns -r28571:HEAD
+rev=$(svn log --stop-on-copy \
+  ${repo}/branches/${branchname} \
+  | egrep "r[0-9]+" | tail -1 | sed -e "s#\(r[0-9]\+\).\+#-\1:HEAD#")
+
+# now, fetch repo starting from the branch's initial commit
+git config --add svn-remote.svn.fetch $branchname:/refs/remotes/origin/$branchname
+git svn fetch $rev
+git checkout -b $branchname

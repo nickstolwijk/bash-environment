@@ -1,0 +1,2 @@
+#!/bin/sh
+git log --name-only --pretty=format: --grep $1 | grep java | sort | uniq

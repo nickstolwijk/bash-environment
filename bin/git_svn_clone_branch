@@ -1,0 +1,18 @@
+#!/bin/bash
+
+repo=$1
+branchname=$2
+target_dir=$3
+ignore_paths=$4
+
+# Figure out the revision number based on when a branch was created, then 
+# from r28571, returns -r28571:HEAD
+branch_start_rev=$(svn log --stop-on-copy \
+  ${repo}/branches/${branchname} \
+  | egrep "r[0-9]+" | tail -1 | sed -e "s#\(r[0-9]\+\).\+#-\1#")
+trunk_start_rev=$(svn log ${repo}/trunk ${branch_start_rev}:0 -l 1 | egrep "r[0-9]+" | tail -1 |  sed -e "s#\(r[0-9]\+\).\+#-\1:HEAD#")
+
+# now, fetch repo starting from the branch's initial commit
+echo Starting from revision $trunk_start_rev.
+
+git svn clone -T trunk -b branches -b branches/InfraAtlas-releases/ $trunk_start_rev $repo $target_dir 

@@ -1,3 +1,6 @@
 [submodule "git-aware-prompt"]
 	path = git-aware-prompt
 	url = git://github.com/jimeh/git-aware-prompt.git
+[submodule "maven-cleanup"]
+        path = maven-cleanup
+        url = git://github.com/siivonen/maven-cleanup.git 
